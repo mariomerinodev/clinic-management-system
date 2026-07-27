@@ -1,0 +1,36 @@
+# Python / FastAPI
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+.env
+
+# Node.js / Frontend (por si creas el frontend en la misma raíz o subcarpetas)
+node_modules/
+.next/
+out/
+dist-ssr/
+*.log
+
+# IDEs y Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Bases de datos
+*.db
