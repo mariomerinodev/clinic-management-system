@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from .modules.patients.router import router as patient_router
 from .core.database import Base, engine
 
 Base.metadata.create_all(bind=engine)
@@ -23,6 +23,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Registrar los routers
+app.include_router(patient_router)
 
 @app.get("/")
 def root():

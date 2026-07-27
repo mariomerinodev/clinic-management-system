@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy import Column, Date, DateTime, Integer, String
+from datetime import datetime, timezone
 from ...core.database import Base
 
 # Modelo del Paciente
@@ -20,3 +21,7 @@ class Patient(Base):
 
     # Información médica básica
     blood_group = Column(String)
+
+    # Información sobre el registro del paciente
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
