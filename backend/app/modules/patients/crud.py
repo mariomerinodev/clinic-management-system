@@ -11,14 +11,7 @@ def patient_create(db: Session, patient: schemas.PatientCreate):
 
     # 2. Crear paciente
     new_patient = models.Patient(
-        name=patient.name,
-        birthdate=patient.birthdate,
-        gender=patient.gender,
-        phone_number=patient.phone_number,
-        email=patient.email,
-        cp=patient.cp,
-        legal_identifier=patient.legal_identifier,
-        blood_group=patient.blood_group
+        **patient.model_dump()
     )
     db.add(new_patient)
     db.commit()
@@ -47,7 +40,7 @@ def patient_update(db: Session, patient_id: int, new_data_patient: schemas.Patie
     db_patient = db.query(models.Patient).filter(models.Patient.id == patient_id).first()
     
     if not db_patient:
-        return None, "PATIENT_DONT_EXISTS"
+        return None, "PATIENT_NOT_FOUND"
     
     # 2. Convertir los datos enviados a diccionario
     update_data = new_data_patient.model_dump(exclude_unset=True) # Excluye los que no se hayan rellenado

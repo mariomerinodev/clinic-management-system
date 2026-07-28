@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Date, DateTime, Integer, String
 from datetime import datetime, timezone
+
+from sqlalchemy.orm import relationship
 from ...core.database import Base
 
 # Modelo del Paciente
@@ -25,3 +27,6 @@ class Patient(Base):
     # Información sobre el registro del paciente
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+
+    # Relaciones con otras tablas
+    emergency_contacts =  relationship("EmergencyContact", back_populates="patient", cascade="all, delete-orphan")

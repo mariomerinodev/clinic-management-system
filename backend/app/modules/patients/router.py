@@ -4,7 +4,14 @@ from sqlalchemy.orm import Session
 from ...core.database import get_db
 from . import schemas, crud
 
+# Routers
+from .submodules.emergency_contacts.router import router as emergency_contact_router
+
 router = APIRouter(prefix="/patients", tags=["Patients"])
+
+# Registrar los routers relacionados con pacientes
+router.include_router(emergency_contact_router)
+
 
 # POST -> Crear un paciente nuevo
 @router.post("/", response_model=schemas.PatientResponse)
@@ -20,6 +27,7 @@ def patient_create(patient: schemas.PatientCreate, db: Session = Depends(get_db)
 def patient_get_list(db: Session = Depends(get_db)):
     return crud.patient_get_list(db=db)
 
+
 # GET -> Obtener un paciente
 @router.get("/{patient_id}", response_model=schemas.PatientResponse)
 def patient_get(patient_id: int, db: Session = Depends(get_db)):
@@ -29,6 +37,7 @@ def patient_get(patient_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="El paciente no existe")
     return db_patient
 
+
 # PATCH -> Actualizar datos de un paciente
 @router.patch("/{patient_id}", response_model=schemas.PatientResponse)
 def patient_update(patient_id: int, new_data_patient: schemas.PatientUpdate, db: Session = Depends(get_db)):
@@ -37,10 +46,11 @@ def patient_update(patient_id: int, new_data_patient: schemas.PatientUpdate, db:
     match error:
         case "LEGAL_IDENTIFIER_ALREADY_EXISTS":
             raise HTTPException(status_code=400, detail="El identificador legal ya está en uso")
-        case "PATIENT_DONT_EXISTS":
+        case "PATIENT_NOT_FOUND":
             raise HTTPException(status_code=404, detail="El paciente no existe")
+        case _:
+            return db_patient_updated
 
-    return db_patient_updated
 
 # DELETE -> Eliminar un paciente
 @router.delete("/{patient_id}", status_code=200)
