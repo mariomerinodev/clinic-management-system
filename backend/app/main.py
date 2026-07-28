@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .modules.patients.router import router as patient_router
+from .modules.patient_router import router as patient_router
 from .core.database import Base, engine
 
 Base.metadata.create_all(bind=engine)

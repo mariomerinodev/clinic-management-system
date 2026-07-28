@@ -4,14 +4,7 @@ from sqlalchemy.orm import Session
 from ...core.database import get_db
 from . import schemas, crud
 
-# Routers
-from .submodules.emergency_contacts.router import router as emergency_contact_router
-
 router = APIRouter(prefix="/patients", tags=["Patients"])
-
-# Registrar los routers relacionados con pacientes
-router.include_router(emergency_contact_router)
-
 
 # POST -> Crear un paciente nuevo
 @router.post("/", response_model=schemas.PatientResponse)
